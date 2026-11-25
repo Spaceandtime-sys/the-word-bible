@@ -1,0 +1,10 @@
+{
+  "name": "The Word — Bible",
+  "short_name": "The Word",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f3ed",
+  "theme_color": "#10251f",
+  "description": "A quiet place in His Word.",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}

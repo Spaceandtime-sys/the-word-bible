@@ -70,6 +70,17 @@ $('nextQuestion').addEventListener('click',()=>{if(!answered)return;if(quizIndex
 $('restartQuiz').addEventListener('click',()=>{quizIndex=0;quizPoints=0;renderQuestion()});
 
 function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),1900)}
+// Reading appearance controls: font size and style are saved on this device.
+const settingsBtn=$('settingsBtn'),settingsPanel=$('readingSettings'),fontStyleSelect=$('fontStyleSelect');
+function setReaderSize(size){const px=Number(size)||16;document.documentElement.style.setProperty('--reader-font-size',px+'px');document.documentElement.style.setProperty('--daily-font-size',Math.min(28,px+8)+'px');document.querySelectorAll('[data-font-size]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.fontSize)===px)));localStorage.setItem('wordReaderSize',String(px))}
+function setReaderStyle(style){const allowed=['classic','modern','elegant','clean'];const value=allowed.includes(style)?style:'classic';document.body.dataset.readerStyle=value;fontStyleSelect.value=value;localStorage.setItem('wordReaderStyle',value)}
+document.querySelectorAll('[data-font-size]').forEach(b=>b.addEventListener('click',()=>setReaderSize(b.dataset.fontSize)));
+fontStyleSelect.addEventListener('change',()=>setReaderStyle(fontStyleSelect.value));
+settingsBtn.addEventListener('click',()=>{const opening=settingsPanel.hidden;settingsPanel.hidden=!opening;settingsBtn.setAttribute('aria-expanded',String(opening))});
+document.addEventListener('click',e=>{if(!e.target.closest('.settings-wrap')){settingsPanel.hidden=true;settingsBtn.setAttribute('aria-expanded','false')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){settingsPanel.hidden=true;settingsBtn.setAttribute('aria-expanded','false')}});
+setReaderSize(localStorage.getItem('wordReaderSize')||'16');setReaderStyle(localStorage.getItem('wordReaderStyle')||'classic');
+
 $('themeBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('wordDark',document.body.classList.contains('dark')?'1':'0')});
 if(localStorage.getItem('wordDark')==='1')document.body.classList.add('dark');
 document.querySelectorAll('.bottom-nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));

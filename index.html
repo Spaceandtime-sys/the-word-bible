@@ -14,7 +14,28 @@
 <header class="topbar" id="top">
   <div class="brand-mark">✦</div>
   <div><div class="brand">THE WORD</div><div class="tagline">A quiet place in His Word</div></div>
-  <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">☾</button>
+  <button id="themeBtn" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">☾</button>
+  <div class="settings-wrap">
+    <button id="settingsBtn" class="icon-btn settings-trigger" aria-label="Reading settings" aria-expanded="false" aria-controls="readingSettings" title="Reading settings">⋮</button>
+    <div id="readingSettings" class="settings-panel" role="dialog" aria-label="Reading appearance" hidden>
+      <div class="settings-title">Reading appearance</div>
+      <div class="settings-label">FONT SIZE</div>
+      <div class="font-size-options" role="group" aria-label="Font size">
+        <button type="button" data-font-size="14" aria-pressed="false">A−</button>
+        <button type="button" data-font-size="16" aria-pressed="true">A</button>
+        <button type="button" data-font-size="19" aria-pressed="false">A+</button>
+        <button type="button" data-font-size="22" aria-pressed="false">A++</button>
+      </div>
+      <label class="font-style-label" for="fontStyleSelect">FONT STYLE</label>
+      <select id="fontStyleSelect">
+        <option value="classic">Classic Serif</option>
+        <option value="modern">Modern Sans</option>
+        <option value="elegant">Elegant</option>
+        <option value="clean">Clean</option>
+      </select>
+      <p class="settings-hint">Your reading preferences are saved on this device.</p>
+    </div>
+  </div>
 </header>
 <main>
   <section class="welcome">

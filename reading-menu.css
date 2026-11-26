@@ -1,0 +1,57 @@
+/* THE WORD — Liquid Glass Reading Menu */
+.reading-menu-trigger{margin-left:0;font-size:25px;font-weight:700;line-height:1}
+.bottom-nav a.active{
+  color:#29220c;
+  background:linear-gradient(145deg,#ffe58a,#f4c842);
+  box-shadow:0 5px 16px rgba(211,166,35,.28),inset 0 1px 0 rgba(255,255,255,.8);
+}
+body.dark .bottom-nav a.active{color:#342707;background:linear-gradient(145deg,#ffe58a,#e6b92f)}
+.reading-glass-backdrop{
+  position:fixed;inset:0;z-index:29;background:rgba(10,18,15,.08);
+  opacity:0;pointer-events:none;transition:opacity .22s ease;
+  -webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+}
+.reading-glass-backdrop.visible{opacity:1;pointer-events:auto}
+.reading-glass-menu{
+  position:fixed;z-index:30;top:66px;right:14px;width:min(310px,calc(100vw - 28px));
+  padding:18px;border-radius:27px; color:#1c2a24;
+  background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(244,247,242,.58));
+  border:1px solid rgba(255,255,255,.82);
+  box-shadow:0 22px 65px rgba(12,28,20,.22),inset 0 1px 1px rgba(255,255,255,.95);
+  -webkit-backdrop-filter:blur(30px) saturate(1.7);backdrop-filter:blur(30px) saturate(1.7);
+  transform-origin:top right;opacity:0;visibility:hidden;transform:translateY(-9px) scale(.88);
+  pointer-events:none;
+}
+body.dark .reading-glass-menu{
+  color:#f5f1e6;background:linear-gradient(145deg,rgba(43,59,50,.88),rgba(25,39,32,.76));
+  border-color:rgba(255,255,255,.19);box-shadow:0 22px 65px rgba(0,0,0,.42),inset 0 1px 1px rgba(255,255,255,.18)
+}
+.reading-glass-menu.open{
+  visibility:visible;pointer-events:auto;animation:glassBounceIn .58s cubic-bezier(.2,1.45,.35,1) both;
+}
+.reading-glass-menu.closing{visibility:visible;pointer-events:none;animation:glassBounceOut .22s ease-in both}
+@keyframes glassBounceIn{
+  0%{opacity:0;transform:translateY(-12px) scale(.82)}
+  58%{opacity:1;transform:translateY(3px) scale(1.035)}
+  78%{transform:translateY(-2px) scale(.99)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes glassBounceOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-8px) scale(.9)}}
+.reading-menu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.reading-menu-head strong{font:700 13px 'DM Sans',sans-serif;letter-spacing:.4px}
+.reading-menu-close{border:0;width:30px;height:30px;border-radius:50%;background:rgba(120,130,120,.15);color:inherit;font-size:18px}
+.reading-menu-group{padding:12px 0;border-top:1px solid rgba(120,130,120,.2)}
+.reading-menu-label{display:block;font:700 10px 'DM Sans',sans-serif;letter-spacing:1.3px;color:#8a8f85;margin:0 0 9px}
+body.dark .reading-menu-label{color:#b7c0b5}
+.reading-choice-row{display:flex;gap:7px;flex-wrap:wrap}
+.reading-choice{
+  flex:1;min-width:52px;border:1px solid rgba(120,130,120,.2);border-radius:14px;
+  padding:10px 7px;background:rgba(255,255,255,.35);color:inherit;
+  font:600 11px 'DM Sans',sans-serif;transition:transform .18s,background .18s,box-shadow .18s;
+}
+body.dark .reading-choice{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.reading-choice:active{transform:scale(.94)}
+.reading-choice.selected{background:linear-gradient(145deg,#ffe58a,#f3c746);border-color:#e2b52f;color:#302608;box-shadow:0 4px 12px rgba(211,166,35,.2)}
+.reading-preview{margin-top:12px;padding:12px 13px;border-radius:15px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.45);font-size:15px;line-height:1.55}
+body.dark .reading-preview{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+@media(prefers-reduced-motion:reduce){.reading-glass-menu.open,.reading-glass-menu.closing{animation:none!important;opacity:1;transform:none}}

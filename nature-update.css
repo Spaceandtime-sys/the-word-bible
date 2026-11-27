@@ -1,0 +1,13 @@
+
+/* THE WORD — daily nature photography and expanded settings panel */
+.settings-panel{width:min(310px,calc(100vw - 30px));max-height:75vh;overflow:auto}
+.appearance-title{margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.daily{position:relative;isolation:isolate;overflow:hidden;min-height:310px;display:flex;align-items:center;background-color:#183d32;background-image:linear-gradient(110deg,rgba(8,28,22,.88),rgba(8,28,22,.42)),var(--daily-photo,linear-gradient(135deg,#183d32,#102820));background-size:cover;background-position:center;border:1px solid #ffffff1c;padding:25px;color:#fffefa;transition:background-image .6s ease}
+.daily::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(5,20,16,.35),transparent 55%);pointer-events:none}
+.daily .section-label{color:#f0d99e}
+.daily-verse{font-size:var(--daily-font-size,24px);font-family:var(--reader-font,'Playfair Display',serif);line-height:1.5;margin:18px 0 12px;animation:fadeIn .5s}
+.daily-ref{font-size:11px;letter-spacing:1px;color:#f0e5cb}
+.daily-note{font-size:10px;color:#f0e5cb;margin:12px 0 0}
+.daily-action{border-color:#ffffff65;background:#ffffff20;color:#fff}
+.settings-hint{font-size:10px;line-height:1.5;color:var(--muted);margin:9px 0 0}
+body.dark .daily{border-color:#ffffff25}

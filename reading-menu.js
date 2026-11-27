@@ -1,1 +1,33 @@
-(()=>{const t=document.getElementById('readingMenuBtn');if(!t)return;let s;try{s=JSON.parse(localStorage.getItem('wordReadingPrefs')||'{"size":"medium","font":"classic"}')}catch(e){s={size:'medium',font:'classic'}}const b=document.createElement('div');b.className='reading-glass-backdrop';const m=document.createElement('section');m.className='reading-glass-menu';m.setAttribute('role','dialog');m.setAttribute('aria-label','Reading settings');m.innerHTML=`<div class="reading-menu-head"><strong>Reading appearance</strong><button class="reading-menu-close" aria-label="Close">×</button></div><div class="reading-menu-group"><span class="reading-menu-label">FONT SIZE</span><div class="reading-choice-row" data-setting="size"><button class="reading-choice" data-value="small">Small</button><button class="reading-choice" data-value="medium">Medium</button><button class="reading-choice" data-value="large">Large</button><button class="reading-choice" data-value="xlarge">XL</button></div></div><div class="reading-menu-group"><span class="reading-menu-label">FONT STYLE</span><div class="reading-choice-row" data-setting="font"><button class="reading-choice" data-value="classic">Classic</button><button class="reading-choice" data-value="modern">Modern</button><button class="reading-choice" data-value="serif">Serif</button><button class="reading-choice" data-value="clean">Clean</button></div><div class="reading-preview" id="readingPreview">“Thy word is a lamp unto my feet.”</div></div>`;document.body.append(b,m);const sizes={small:'14px',medium:'16px',large:'19px',xlarge:'22px'},fonts={classic:"'Playfair Display',Georgia,serif",modern:"'DM Sans',Arial,sans-serif",serif:"Georgia,'Times New Roman',serif",clean:"Arial,Helvetica,sans-serif"};function apply(){const z=sizes[s.size]||sizes.medium,f=fonts[s.font]||fonts.classic;document.querySelectorAll('.passage .verse,.daily-verse,.saved-item,.search-results .result').forEach(e=>{e.style.fontSize=z;e.style.fontFamily=f});m.querySelectorAll('[data-setting]').forEach(r=>r.querySelectorAll('button').forEach(x=>{let on=s[r.dataset.setting]===x.dataset.value;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on))}));let q=m.querySelector('#readingPreview');q.style.fontSize=z;q.style.fontFamily=f}function close(){if(!m.classList.contains('open'))return;m.classList.remove('open');m.classList.add('closing');b.classList.remove('visible');t.setAttribute('aria-expanded','false');setTimeout(()=>m.classList.remove('closing'),360)}function open(){m.classList.remove('closing');m.classList.add('open');b.classList.add('visible');t.setAttribute('aria-expanded','true');apply()}t.addEventListener('click',()=>m.classList.contains('open')?close():open());m.querySelector('.reading-menu-close').addEventListener('click',close);b.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});m.querySelectorAll('[data-setting] button').forEach(x=>x.addEventListener('click',()=>{s[x.closest('[data-setting]').dataset.setting]=x.dataset.value;localStorage.setItem('wordReadingPrefs',JSON.stringify(s));apply()}));apply()})();
+/* Keeps the yellow navigation marker on the section currently being viewed. */
+(() => {
+  const links = Array.from(document.querySelectorAll('.bottom-nav a'));
+  const sections = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+  if (!links.length || !sections.length) return;
+
+  function activate(id) {
+    links.forEach(link => {
+      const selected = link.getAttribute('href') === '#' + id;
+      if (selected && !link.classList.contains('active')) {
+        link.classList.add('active');
+      } else if (!selected) {
+        link.classList.remove('active');
+      }
+      if (selected) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  links.forEach(link => link.addEventListener('click', () => {
+    const id = link.getAttribute('href').slice(1);
+    activate(id);
+  }));
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) activate(visible.target.id);
+    }, { rootMargin: '-22% 0px -48% 0px', threshold: [0, .15, .35, .6] });
+    sections.forEach(section => observer.observe(section));
+  }
+})();

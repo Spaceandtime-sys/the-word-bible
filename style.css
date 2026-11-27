@@ -26,3 +26,65 @@ body.dark select,body.dark input{background:#203129;color:var(--ink)}body.dark .
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 body[data-reader-style='modern']{--reader-font:'DM Sans',sans-serif}body[data-reader-style='classic']{--reader-font:'Playfair Display',serif}body[data-reader-style='elegant']{--reader-font:Georgia,serif}body[data-reader-style='clean']{--reader-font:Arial,sans-serif}
+/* THE WORD — Daily Verse Layout Fix */
+.daily {
+  display: block !important;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 28px 24px !important;
+  text-align: left;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.daily > * {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.daily .section-label {
+  margin-bottom: 18px;
+}
+
+.daily .daily-verse {
+  font-size: clamp(21px, 5vw, 28px);
+  line-height: 1.55;
+  margin: 0 0 16px;
+  overflow-wrap: break-word;
+}
+
+.daily .daily-ref {
+  margin-bottom: 18px;
+}
+
+.daily .daily-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.daily .daily-note {
+  margin-top: 14px;
+}
+
+.daily::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    rgba(5, 30, 22, .88),
+    rgba(5, 30, 22, .60)
+  );
+  z-index: 0;
+  pointer-events: none;
+}

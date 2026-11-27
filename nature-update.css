@@ -1,13 +1,77 @@
 
-/* THE WORD — daily nature photography and expanded settings panel */
-.settings-panel{width:min(310px,calc(100vw - 30px));max-height:75vh;overflow:auto}
-.appearance-title{margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
-.daily{position:relative;isolation:isolate;overflow:hidden;min-height:310px;display:flex;align-items:center;background-color:#183d32;background-image:linear-gradient(110deg,rgba(8,28,22,.88),rgba(8,28,22,.42)),var(--daily-photo,linear-gradient(135deg,#183d32,#102820));background-size:cover;background-position:center;border:1px solid #ffffff1c;padding:25px;color:#fffefa;transition:background-image .6s ease}
-.daily::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(5,20,16,.35),transparent 55%);pointer-events:none}
-.daily .section-label{color:#f0d99e}
-.daily-verse{font-size:var(--daily-font-size,24px);font-family:var(--reader-font,'Playfair Display',serif);line-height:1.5;margin:18px 0 12px;animation:fadeIn .5s}
-.daily-ref{font-size:11px;letter-spacing:1px;color:#f0e5cb}
-.daily-note{font-size:10px;color:#f0e5cb;margin:12px 0 0}
-.daily-action{border-color:#ffffff65;background:#ffffff20;color:#fff}
-.settings-hint{font-size:10px;line-height:1.5;color:var(--muted);margin:9px 0 0}
-body.dark .daily{border-color:#ffffff25}
+/* THE WORD — 400-Day Nature Background System */
+
+.daily {
+  display: block !important;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: 28px 24px !important;
+  text-align: left;
+  border-radius: 24px;
+  background-color: #102820;
+  background-image:
+    linear-gradient(
+      110deg,
+      rgba(5, 30, 22, 0.88),
+      rgba(5, 30, 22, 0.48)
+    ),
+    var(--daily-photo, linear-gradient(135deg, #183d32, #102820));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.7s ease;
+}
+
+.daily > * {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.daily .section-label {
+  margin-bottom: 18px;
+  color: #e8c878;
+  letter-spacing: 2px;
+}
+
+.daily .daily-verse {
+  font-size: clamp(21px, 5vw, 28px);
+  line-height: 1.55;
+  margin-bottom: 16px;
+  overflow-wrap: break-word;
+  color: #ffffff;
+}
+
+.daily .daily-ref {
+  margin-bottom: 18px;
+  color: #f0d99b;
+}
+
+.daily .daily-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.daily .daily-note {
+  margin-top: 14px;
+  color: rgba(255,255,255,0.8);
+}
+
+@media (max-width: 380px) {
+  .daily {
+    padding: 23px 18px !important;
+  }
+
+  .daily .daily-actions {
+    gap: 8px;
+  }
+}

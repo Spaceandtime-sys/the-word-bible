@@ -76,3 +76,120 @@ if(localStorage.getItem('wordDark')==='1')document.body.classList.add('dark');
 document.querySelectorAll('.bottom-nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
 showDaily();renderSaved();renderQuestion();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+
+/* THE WORD — Bible Reading Plans */
+
+(function () {
+  const planSelect = document.getElementById('planSelect');
+  const planDays = document.getElementById('planDays');
+  const planProgress = document.getElementById('planProgress');
+  const planProgressText = document.getElementById('planProgressText');
+  const planHeading = document.getElementById('planHeading');
+
+  if (!planSelect || !planDays || !planProgress || !planProgressText || !planHeading) return;
+
+  const planOptions = {
+    30: '30-Day Bible Challenge',
+    90: '90-Day Bible Journey',
+    365: '365-Day Bible Journey'
+  };
+
+  const storageKey = 'theWordReadingPlans';
+  let completedPlans = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+  const allChapters = [];
+  books.forEach(([book, count]) => {
+    for (let chapter = 1; chapter <= count; chapter++) {
+      allChapters.push({ book, chapter });
+    }
+  });
+
+  function getDayReadings(totalDays, day) {
+    const start = Math.floor((day - 1) * allChapters.length / totalDays);
+    const end = Math.floor(day * allChapters.length / totalDays);
+    const chapters = allChapters.slice(start, end);
+    const groups = [];
+
+    chapters.forEach(item => {
+      const last = groups[groups.length - 1];
+      if (last && last.book === item.book && last.end + 1 === item.chapter) {
+        last.end = item.chapter;
+      } else {
+        groups.push({
+          book: item.book,
+          start: item.chapter,
+          end: item.chapter
+        });
+      }
+    });
+
+    return groups.map(g =>
+      g.book + ' ' + g.start +
+      (g.end > g.start ? '–' + g.end : '')
+    ).join(', ');
+  }
+
+  function saveProgress() {
+    localStorage.setItem(storageKey, JSON.stringify(completedPlans));
+  }
+
+  function renderPlans() {
+    const totalDays = Number(planSelect.value);
+    const planName = planOptions[totalDays];
+    if (!completedPlans[totalDays]) completedPlans[totalDays] = [];
+
+    const completed = completedPlans[totalDays];
+    const percentage = Math.round(completed.length / totalDays * 100);
+
+    planHeading.textContent = planName;
+    planProgress.style.width = percentage + '%';
+    planProgressText.textContent =
+      completed.length + ' of ' + totalDays + ' days completed · ' + percentage + '%';
+
+    planDays.innerHTML = '';
+
+    for (let day = 1; day <= totalDays; day++) {
+      const isDone = completed.includes(day);
+      const item = document.createElement('label');
+      item.className = 'plan-day' + (isDone ? ' completed' : '');
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = isDone;
+      checkbox.setAttribute('aria-label', 'Mark day ' + day + ' completed');
+
+      const details = document.createElement('span');
+      details.className = 'plan-day-details';
+
+      const heading = document.createElement('strong');
+      heading.textContent = 'Day ' + day;
+
+      const reading = document.createElement('small');
+      reading.textContent = getDayReadings(totalDays, day);
+
+      details.append(heading, reading);
+      item.append(checkbox, details);
+
+      checkbox.addEventListener('change', () => {
+        const list = completedPlans[totalDays] || [];
+
+        if (checkbox.checked) {
+          if (!list.includes(day)) list.push(day);
+        } else {
+          completedPlans[totalDays] = list.filter(d => d !== day);
+        }
+
+        completedPlans[totalDays] = list.sort((a, b) => a - b);
+        saveProgress();
+        renderPlans();
+      });
+
+      planDays.append(item);
+    }
+  }
+
+  planSelect.addEventListener('change', renderPlans);
+  renderPlans();
+})();
+
